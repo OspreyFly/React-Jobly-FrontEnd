@@ -12,12 +12,12 @@ function AllRoutes() {
   return (
     <Routes>
       <Route exact path="/" element={<><HomePage /></>} />
-      <Route path="/companies" component={CompaniesList} />
-      <Route path="/companies/:id" component={CompanyDetails} />
-      <Route path="/jobs" component={JobsList} />
-      <Route path="/login" component={LoginSignUp} />
-      <Route path="/signup" component={SignUpForm} />
-      <Route path="/profile" component={EditProfile} />
+      <Route path="/companies" element={<><CompaniesList /></>} />
+      <Route path="/companies/:id" element={<><CompanyDetails /></>} />
+      <Route path="/jobs" element={<><JobsList /></>} />
+      <Route path="/login" element={<><LoginSignUp /></>} />
+      <Route path="/signup" element={<><SignUpForm /></>} />
+      <Route path="/profile" element={<><EditProfile /></>} />
     </Routes>
   );
 }

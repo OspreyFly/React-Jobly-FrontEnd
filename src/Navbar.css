@@ -1,0 +1,12 @@
+#navbar {
+    display: flex;
+    justify-content: space-between; /* Spreads items evenly with space between them */
+    padding: 0;
+    list-style-type: none; /* Removes default bullet points */
+
+  }
+  
+  li {
+    margin: 0 10px; /* Adjusts space between items */
+    text-align: center;
+  }
