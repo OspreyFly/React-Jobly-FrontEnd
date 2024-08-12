@@ -13,7 +13,7 @@ function AllRoutes() {
     <Routes>
       <Route exact path="/" element={<><HomePage /></>} />
       <Route path="/companies" element={<><CompaniesList /></>} />
-      <Route path="/companies/:id" element={<><CompanyDetails /></>} />
+      <Route path="/companies/:handle" element={<><CompanyDetails /></>} />
       <Route path="/jobs" element={<><JobsList /></>} />
       <Route path="/login" element={<><LoginSignUp /></>} />
       <Route path="/signup" element={<><SignUpForm /></>} />

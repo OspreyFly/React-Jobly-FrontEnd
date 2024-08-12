@@ -1,4 +1,4 @@
-.company-card {
+.job-card {
     display: inline-block; /* Allows us to center the card horizontally */
     background-color: #ffffed; /* Adjusted opacity for better visibility */
     border-radius: 20px; /* Increased for a softer edge */

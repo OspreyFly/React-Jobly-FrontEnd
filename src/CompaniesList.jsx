@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { JoblyApi } from '../api';
 import CompanyCard from './CompanyCard';
+import './CompaniesList.css';
 
 const CompanyList = () => {
     const [companies, setCompanies] = useState([]);
@@ -13,7 +14,6 @@ const CompanyList = () => {
             setIsLoading(true);
             try {
                 const response = await JoblyApi.getAllCompanies({ name: searchTerm });
-                console.log(response);
                 setCompanies(response);
             } catch (error) {
                 console.error("Failed to fetch companies:", error);
@@ -42,7 +42,9 @@ const CompanyList = () => {
             <ul>
                 {companies.map((company) => (
                     <li key={company.handle}>
-                        <CompanyCard company={company} />
+                        <a href={'/companies/' + company.handle}>
+                            <CompanyCard company={company} />
+                        </a>
                     </li>
                 ))}
             </ul>

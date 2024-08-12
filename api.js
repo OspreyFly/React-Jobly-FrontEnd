@@ -16,34 +16,48 @@ class JoblyApi {
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
+    switch(endpoint){
+      case "companies":
+        // Convert minEmployees and maxEmployees to numbers if present
+        if (data.minEmployees !== undefined) {
+          data.minEmployees = +data.minEmployees; // Unary plus converts to number
+        }
+        if (data.maxEmployees !== undefined) {
+          data.maxEmployees = +data.maxEmployees; // Unary plus converts to number
+        }
 
-    // Convert minEmployees and maxEmployees to numbers if present
-    if (data.minEmployees !== undefined) {
-      data.minEmployees = +data.minEmployees; // Unary plus converts to number
+        // Directly check if 'name' is an empty string and delete it
+        if (typeof data.name === 'string' && data.name.trim().length === 0) {
+          delete data.name;
+        }
+        break;
+      case "jobs":
+        if (data.salary !== undefined) {
+          data.salary = +data.salary; // Unary plus converts to number
+        }
+        if (data.equity !== undefined) {
+          data.equity = +data.equity; // Unary plus converts to number
+        }
+        if (typeof data.title === 'string' && data.title.trim().length === 0) {
+          delete data.title;
+        }
+        break;
+      default: 
+        break;
     }
-    if (data.maxEmployees !== undefined) {
-      data.maxEmployees = +data.maxEmployees; // Unary plus converts to number
-    }
-
-    // Directly check if 'name' is an empty string and delete it
-    if (typeof data.name === 'string' && data.name.trim().length === 0) {
-      delete data.name;
-    }
-
-    const url = `${BASE_URL}/${endpoint}`;
-    const headers = { Authorization: `Bearer ${this.token}` };
-    const params = (method === "get")
+      const url = `${BASE_URL}/${endpoint}`;
+      const headers = { Authorization: `Bearer ${this.token}` };
+      const params = (method === "get")
         ? data
         : {};
-    console.log("data: ", data);
-    try {
-     const result = await axios({ url, method, data, params, headers });
-     return result.data;
-    } catch (err) {
-      console.error("API Error:", err);
-      let message = err;
-      throw Array.isArray(message) ? message : [message];
-    }
+      try {
+        const result = await axios({ url, method, data, params, headers });
+        return result.data;
+      } catch (err) {
+        console.error("API Error:", err);
+        let message = err;
+        throw Array.isArray(message) ? message : [message];
+      }  
   }
 
   // Individual API routes
@@ -71,8 +85,8 @@ class JoblyApi {
 
   /** Get list of jobs (filtered by title if not undefined) */
 
-  static async getJobs(title) {
-    let res = await this.request("jobs", { title });
+  static async getJobs(queryParams = {}) {
+    let res = await this.request("jobs", queryParams);
     return res.jobs;
   }
 

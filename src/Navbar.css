@@ -1,12 +1,27 @@
-#navbar {
+
+#nav-container {
+  background-color: rgb(0, 0, 0);
+}
+
+#nav-list {
     display: flex;
     justify-content: space-between; /* Spreads items evenly with space between them */
     padding: 0;
     list-style-type: none; /* Removes default bullet points */
-
   }
-  
-  li {
+
+#nav-list li:hover {
+    background-color: #f0f0f0; /* Light grey background */
+}
+
+
+li {
     margin: 0 10px; /* Adjusts space between items */
     text-align: center;
   }
+
+#nav {
+    margin: 0;
+    
+    background-color: rgb(134, 235, 255);
+}
