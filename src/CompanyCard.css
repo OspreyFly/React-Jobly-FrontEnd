@@ -7,3 +7,12 @@
     transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
     margin: 10px;
 }
+
+.company-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6); /* Adds depth */
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}

@@ -16,48 +16,42 @@ class JoblyApi {
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
-    switch(endpoint){
-      case "companies":
-        // Convert minEmployees and maxEmployees to numbers if present
-        if (data.minEmployees !== undefined) {
-          data.minEmployees = +data.minEmployees; // Unary plus converts to number
-        }
-        if (data.maxEmployees !== undefined) {
-          data.maxEmployees = +data.maxEmployees; // Unary plus converts to number
-        }
+    let url = `${BASE_URL}/${endpoint}`;
 
-        // Directly check if 'name' is an empty string and delete it
-        if (typeof data.name === 'string' && data.name.trim().length === 0) {
-          delete data.name;
+    if (method === "get" && Object.keys(data).length > 0) {
+      // Use reduce to filter out undefined or null values and accumulate the remaining key-value pairs into a new object
+      const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          acc[key] = value;
         }
-        break;
-      case "jobs":
-        if (data.salary !== undefined) {
-          data.salary = +data.salary; // Unary plus converts to number
-        }
-        if (data.equity !== undefined) {
-          data.equity = +data.equity; // Unary plus converts to number
-        }
-        if (typeof data.title === 'string' && data.title.trim().length === 0) {
-          delete data.title;
-        }
-        break;
-      default: 
-        break;
+        return acc;
+      }, {});
+    
+      // Construct the URL with the filtered data
+      url += `?${new URLSearchParams(filteredData).toString()}`;
+      data = {}; // Clear data since we're sending it as query params
     }
-      const url = `${BASE_URL}/${endpoint}`;
-      const headers = { Authorization: `Bearer ${this.token}` };
-      const params = (method === "get")
-        ? data
-        : {};
-      try {
-        const result = await axios({ url, method, data, params, headers });
-        return result.data;
-      } catch (err) {
-        console.error("API Error:", err);
-        let message = err;
-        throw Array.isArray(message) ? message : [message];
-      }  
+    
+    
+
+
+    // Adjust headers to include the token
+    const headers = { Authorization: `Bearer ${this.token}` };
+
+    try {
+      const result = await axios({
+        url,
+        method,
+        data,
+        params: data,
+        headers
+      });
+      return result.data;
+    } catch (err) {
+      console.error("API Error:", err);
+      let message = err;
+      throw Array.isArray(message) ? message : [message];
+    }
   }
 
   // Individual API routes
@@ -119,6 +113,6 @@ class JoblyApi {
 }
 
 // Example token (replace with your actual token)
-JoblyApi.token = "YOUR_API_TOKEN_HERE";
+JoblyApi.token = localStorage.getItem("joblyToken");
 
 export { JoblyApi };

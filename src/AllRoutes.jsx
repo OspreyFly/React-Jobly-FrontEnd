@@ -5,7 +5,6 @@ import CompaniesList from './CompaniesList';
 import CompanyDetails from './CompanyDetails';
 import JobsList from './JobsList';
 import LoginSignUp from './LoginSignUp';
-import SignUpForm from './SignUpForm';
 import EditProfile from './EditProfile';
 
 function AllRoutes() {
@@ -16,7 +15,6 @@ function AllRoutes() {
       <Route path="/companies/:handle" element={<><CompanyDetails /></>} />
       <Route path="/jobs" element={<><JobsList /></>} />
       <Route path="/login" element={<><LoginSignUp /></>} />
-      <Route path="/signup" element={<><SignUpForm /></>} />
       <Route path="/profile" element={<><EditProfile /></>} />
     </Routes>
   );
