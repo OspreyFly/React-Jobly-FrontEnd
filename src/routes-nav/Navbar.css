@@ -9,6 +9,14 @@
   margin-bottom: 10px;
 }
 
+#nav-container a {
+  text-decoration: none; /* Removes underline */
+  color: inherit; /* Inherits text color from parent */
+  padding: 6px 12px; /* Adds some padding around links */
+  border-radius: 4px; /* Rounds corners of links */
+  transition: background-color 0.3s ease; /* Smooth transition for background color change */
+}
+
 /* Styles for the navigation list */
 #nav-list {
   display: flex;
@@ -19,6 +27,7 @@
 #nav-list li {
   cursor: pointer;
   transition: background-color 0.3s ease;
+  list-style:none;
 }
 
 #nav-list li:hover {

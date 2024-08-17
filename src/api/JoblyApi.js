@@ -1,6 +1,6 @@
 import axios from 'axios';
-
 const BASE_URL = "http://localhost:3001";
+
 
 /** API Class.
  *
@@ -15,28 +15,30 @@ class JoblyApi {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
+    // Check if the token is undefined and the endpoint is not 'auth/token'
+    if (!JoblyApi.token && endpoint !== 'auth/token' && endpoint !== 'auth/register') {
+      console.warn("Authority Required First");
+    }
+
     console.debug("API Call:", endpoint, data, method);
     let url = `${BASE_URL}/${endpoint}`;
 
     if (method === "get" && Object.keys(data).length > 0) {
-      // Use reduce to filter out undefined or null values and accumulate the remaining key-value pairs into a new object
+      // Filter out undefined or null values and accumulate the remaining key-value pairs into a new object
       const filteredData = Object.entries(data).reduce((acc, [key, value]) => {
         if (value !== undefined && value !== null && value !== '') {
           acc[key] = value;
         }
         return acc;
       }, {});
-    
+
       // Construct the URL with the filtered data
       url += `?${new URLSearchParams(filteredData).toString()}`;
       data = {}; // Clear data since we're sending it as query params
     }
-    
-    
-
 
     // Adjust headers to include the token
-    const headers = { Authorization: `Bearer ${this.token}` };
+    const headers = { Authorization: `Bearer ${JoblyApi.token}` };
 
     try {
       const result = await axios({
@@ -46,6 +48,14 @@ class JoblyApi {
         params: data,
         headers
       });
+
+      // Special handling for 'auth/token' and 'auth/register' endpoints
+      if (endpoint === "auth/token" && !JoblyApi.token) {
+        JoblyApi.token = result.data.token;
+      } else if (endpoint === "auth/register") {
+        // Additional logic for 'auth/register' if needed
+      }
+
       return result.data;
     } catch (err) {
       console.error("API Error:", err);
@@ -53,6 +63,7 @@ class JoblyApi {
       throw Array.isArray(message) ? message : [message];
     }
   }
+
 
   // Individual API routes
 
@@ -69,7 +80,7 @@ class JoblyApi {
     let res = await this.request("companies", queryParams);
     return res.companies;
   }
-    
+
   /** Get details on a company by handle. */
 
   static async getCompany(handle) {
@@ -112,7 +123,6 @@ class JoblyApi {
   }
 }
 
-// Example token (replace with your actual token)
-JoblyApi.token = localStorage.getItem("joblyToken");
 
-export { JoblyApi };
+
+export default JoblyApi;
